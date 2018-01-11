@@ -1,7 +1,7 @@
 SHELL:=/bin/bash
 
-LIBS = -L./halide/lib -lHalide -lpng -lz -ldl -lpthread -lncurses -ljpeg
-INCLUDES = -I./halide/include -I./halide/tools
+LIBS = -L../Halide/cmakebuild/lib -lHalide -lpng -lz -ldl -lpthread -lncurses -ljpeg
+INCLUDES = -I../Halide/cmakebuild/include -I../Halide/tools
 CXXFLAGS = -std=c++14
 
 all:
