@@ -10,7 +10,7 @@ using Halide::Var;
 using Halide::Func;
 
 int main() {
-    ha::Buffer<uint8_t> img = ha::Tools::load_image("images/large.png");
+    ha::Buffer<uint8_t> img = ha::Tools::load_image("current.png");
     Func gray("gray"), keypoints("keypoints"), visuals("visuals");
     Var x("x"), y("y"), c("c");
     ha::Expr input = img(x, y);
@@ -51,12 +51,19 @@ int main() {
     keypoints.gpu_threads(x, y);
 
     ha::Target target = ha::get_host_target();
-    target.set_feature(ha::Target::OpenCL);
+    target.set_feature(ha::Target::Metal);
+    // about 3x slower on same Macbook Pro:
+    // target.set_feature(ha::Target::OpenCL);
     visuals.compile_jit(target);
 
-    //visuals.print_loop_nest();
-    //visuals.compile_to_lowered_stmt("keypoints.html", {}, ha::HTML);
-    //visuals.compile_to_c("k.cpp", {}, "keypoints");
+    /* each of:
+         visuals.print_loop_nest();
+         visuals.compile_to_lowered_stmt("keypoints.html", {}, ha::HTML);
+         visuals.compile_to_c("k.cpp", {}, "keypoints");
+     is informative, the last one seems to limit the available targets to things
+     available in C (ie no Target::Metal)
+    */
+
     using namespace std::chrono;
     auto t0 = steady_clock::now();
     visuals.realize(output);

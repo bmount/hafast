@@ -1,7 +1,8 @@
 SHELL:=/bin/bash
 
-LIBS = -L../Halide/cmakebuild/lib -lHalide -lpng -lz -ldl -lpthread -lncurses -ljpeg
-INCLUDES = -I../Halide/cmakebuild/include -I../Halide/tools
+# run `make distrib` from within Halide to generate an archive, place at <project root>/halide
+LIBS = -L./halide/lib -lHalide -lpng -lz -ldl -lpthread -lncurses -ljpeg
+INCLUDES = -I./halide/include -I./halide/tools
 CXXFLAGS = -std=c++14
 
 all:
